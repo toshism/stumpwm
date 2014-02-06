@@ -125,13 +125,13 @@ The tray is aligned right."
 window coordinates.")
 
 ;; Colors
-(defvar *tray-win-background* "white"
+(defparameter *tray-win-background* (nth 7 stumpwm:*colors*)
   "Tray main container window background color.")
-(defvar *tray-viwin-background* "Grey80"
+(defparameter *tray-viwin-background* stumpwm:*mode-line-background-color*
   "Tray visible icons container window color.")
-(defvar *tray-hiwin-background* "Grey60"
+(defparameter *tray-hiwin-background* stumpwm:*mode-line-border-color*
   "Tray hidden icons container window color.")
-(defvar *tray-cursor-color* "red"
+(defparameter *tray-cursor-color* (nth 2 stumpwm:*colors*)
   "Tray icon selection cursor color.")
 
 ;;; Sorting and hiding
