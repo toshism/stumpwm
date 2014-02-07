@@ -153,9 +153,9 @@ window coordinates.")
                                   :depth depth
                                   :width icon-height
                                   :height tray-height
-                                  :background (xlib:alloc-color
-                                               (xlib:window-colormap root-window)
-                                               *tray-win-background*)
+                                  :background (xlib:alloc-color (xlib:window-colormap root-window)
+                                                               (stumpwm:lookup-color 
+                                                                (stumpwm:current-screen) *tray-win-background*)) 
                                   :event-mask +WIN-EVENT-MASK+)))
     (flet ((create-1x1-invisible-window (event-mask)
 	     (xlib:create-window :parent win
@@ -165,9 +165,9 @@ window coordinates.")
 	     (xlib:create-window :parent win :depth depth
 				 :x x :y y :width icon-height :height tray-height
                                  :event-mask event-mask
-				 :background (xlib:alloc-color
-					      (xlib:window-colormap root-window)
-					      bgcolor))))
+				 :background (xlib:alloc-color (xlib:window-colormap root-window)
+                                                               (stumpwm:lookup-color 
+                                                                (stumpwm:current-screen) bgcolor)))))
       (let* ((fpwin (create-1x1-invisible-window +FPWIN-EVENT-MASK+))
              (sowin (create-1x1-invisible-window +SOWIN-EVENT-MASK+))
              (viwin (create-visible-win *tray-viwin-background* +VIWIN-EVENT-MASK+ icon-height 0))

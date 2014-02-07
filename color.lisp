@@ -36,7 +36,7 @@
 
 (in-package :stumpwm)
 
-(export '(*colors* update-color-map adjust-color update-screen-color-context))
+(export '(*colors* update-color-map adjust-color update-screen-color-context hex-to-xlib-color lookup-color))
 
 (defvar *colors*
   '("black"
