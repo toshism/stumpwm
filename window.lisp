@@ -867,7 +867,7 @@ needed."
     (cond
       ((eq window cw)
        ;; If window to focus is already focused then our work is done.
-       )
+       (screen-set-focus screen window))
       ((and *current-event-time* 
             (member :WM_TAKE_FOCUS (xlib:wm-protocols xwin) :test #'eq))
        (raise-window window)
