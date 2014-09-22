@@ -33,31 +33,14 @@
           add-to-load-path))
 
 (defvar *contrib-dir*
-  #.(asdf:system-relative-pathname (asdf:find-system :stumpwm)
-                                   (make-pathname :directory
-                                                  '(:relative "contrib")))
+  (merge-pathnames "contrib/" *data-dir*)
   "The location of the contrib modules on your system.")
 
-(defun flatten (ls)
-  (labels ( (mklist (x) (if (listp x) x (list x))) )
-    (mapcan #'(lambda (x) (if (atom x) (mklist x) (flatten x))) ls)))
-
 (defun build-load-path (path)
-  "Maps subdirectories of path, returning a list of all subdirs in the
-  first two levels which contain any files ending in .asd"
-  (flatten 
-   (mapcar (lambda (dir) 
-             (let ((asd-file (car (directory 
-                                   (make-pathname :directory (directory-namestring dir) 
-                                                  :name :wild 
-                                                  :type "asd")))))
-               (when asd-file
-                 (directory (directory-namestring asd-file))))) 
-           ;; TODO, make this truely recursive
-           (directory (concat (if (stringp path) path
-                                  (directory-namestring path))
-                              "*/*")))))
-
+  (mapcar-directory-tree (lambda (file)
+                           (when (equal (pathname-type file) "asd")
+                             (pathname-as-directory
+                              (directory-namestring file)))) path))
 (defvar *load-path* nil
   "A list of paths in which modules can be found, by default it is
   populated by any asdf systems found in the first two levels of
@@ -90,12 +73,10 @@
 
 (defun list-modules ()
   "Return a list of the available modules."
-  (flet ((list-module (dir) 
-           (mapcar 'pathname-name
-                   (directory (make-pathname :defaults dir
-                                             :name :wild
-                                             :type "asd")))))
-    (flatten (mapcar #'list-module *load-path*))))
+  (flatten (mapcar (lambda (dir) 
+                     (loop for entry in (list-directory dir) 
+                        if (equal (pathname-type entry) "asd") 
+                        collect (pathname-name entry))) *load-path*)))
 
 (defun find-module (name)
   (if name
@@ -127,7 +108,6 @@ an asdf system, and if so add it to the central registry"
   "Loads the contributed module with the given NAME."
   (let ((module (find-module name)))
       (when module
-        (asdf:operate 'asdf:load-op module))))
-
+        (asdf:oos 'asdf:load-op module))))
 
 ;; End of file

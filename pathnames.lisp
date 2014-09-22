@@ -109,4 +109,14 @@ directory form - see PATHNAME-AS-DIRECTORY."
   #-(or :sbcl :cmu :scl :lispworks :openmcl :allegro :clisp :cormanlisp :ecl :abcl :digitool)
   (error "LIST-DIRECTORY not implemented"))
 
+(defun flatten (ls)
+  (labels ( (mklist (x) (if (listp x) x (list x))) )
+    (mapcan #'(lambda (x) (if (atom x) (mklist x) (flatten x))) ls)))
+
+(defun mapcar-directory-tree (fn directory)
+  (flatten 
+   (loop for entry in (list-directory directory)
+      when (directory-pathname-p entry)
+      collect (mapcar-directory-tree fn entry)
+      collect (funcall fn entry))))
 ;;; EOF
