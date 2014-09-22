@@ -30,6 +30,8 @@ message-window.lisp selection.lisp user.lisp iresize.lisp		\
 bindings.lisp events.lisp help.lisp fdump.lisp mode-line.lisp		\
 time.lisp color.lisp module.lisp stumpwm.lisp version.lisp
 
+.PHONY: release upload-release clean install get-contrib
+
 all: stumpwm stumpwm.info
 
 stumpwm.info: stumpwm.texi
@@ -41,7 +43,8 @@ stumpwm.texi: stumpwm.texi.in
 
 stumpwm: $(FILES)
 	$(LISP) $(@LISP@_BUILDOPTS)
-
+get-contrib:
+	git clone https://github.com/stumpwm/stumpwm-contrib.git ${HOME}/.stumpwm.d/contrib
 release:
 	git tag -a -m "version @PACKAGE_VERSION@" @PACKAGE_VERSION@
 	git archive --format=tar --prefix=stumpwm-@PACKAGE_VERSION@/ HEAD > stumpwm-@PACKAGE_VERSION@.tar
