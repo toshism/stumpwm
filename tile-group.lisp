@@ -860,7 +860,7 @@ windows used to draw the numbers in. The caller must destroy them."
                         :x (frame-x f) :y (frame-display-y group f) :width 1 :height 1
                         :background (screen-fg-color screen)
                         :border (screen-border-color screen)
-                        :border-width 1
+                        :border-width *frame-hint-border-width*
                         :event-mask '())))
                 (xlib:map-window w)
                 (setf (xlib:window-priority w) :above)

@@ -65,6 +65,7 @@
           *maxsize-border-width*
           *transient-border-width*
           *normal-border-width*
+          *frame-hint-border-width*
           *text-color*
           *window-events*
           *window-parent-events*
@@ -341,6 +342,9 @@ the command as a symbol.")
 
 (defvar *normal-border-width* 1
   "The width in pixels given to the borders of regular windows.")
+
+(defvar *frame-hint-border-width* 1
+  "The width in pixels given to the borders of frame hints in frame selector.")
 
 (defvar *text-color* "white"
   "The color of message text.")
